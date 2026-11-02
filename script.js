@@ -37,11 +37,31 @@ const detailPhrases = {
 };
 
 const templates = {
-  Hausaufgaben: [['Der Klassiker', 'Ich wollte es wirklich machen, aber {topic} hat mich komplett aus dem Konzept gebracht. Ich hole es zuverlässig nach.'], ['Fast geschafft', 'Ich habe bei {topic} heute eine unerwartete Pause gebraucht und konnte daraus keinen festen Plan mehr machen. Ich komme sofort wieder dran.'], ['Voller Fokus', 'Das war heute ein echter Ausrutscher wegen {topic}. Ich bin aber gleich wieder bei der Sache und mache es danach sauber.']],
-  'Zu spät': [['Knapp daneben', 'Wegen {topic} hat sich heute alles verzögert. Ich bin schon unterwegs und beeile mich, so gut es geht.'], ['Ungeplante Pause', 'Ich hatte wegen {topic} eine kleine Blockade und konnte nicht rechtzeitig losfahren. Ich bin auf dem Weg und komme so schnell wie möglich.'], ['Spät dran', 'Ich wurde heute durch {topic} aus dem Rhythmus gebracht und bin deshalb später dran. Ich bin schon unterwegs und mache mich sofort auf den Weg.']],
-  Verabredung: [['Ungeplante Wendung', 'Es tut mir leid, aber wegen {topic} schaffe ich es heute leider nicht. Können wir einen neuen Termin finden?'], ['Ehrlich gesagt', 'Heute kommt mir {topic} dazwischen, deshalb kann ich die Verabredung nicht wie geplant einhalten. Ich würde mich gern bald neu verabreden.'], ['Konkret', 'Ich musste mich heute wegen {topic} kurzfristig neu sortieren und kann deshalb nicht erscheinen. Lass uns gern einen neuen Zeitpunkt finden.']],
-  Arbeit: [['Kurze Erklärung', 'Ich kann mich heute wegen {topic} nicht so konzentrieren wie sonst. Ich kümmere mich darum und melde mich mit einem Update.'], ['Prioritäten', 'Wegen {topic} musste ich heute meine Prioritäten neu setzen und konnte den Plan nicht so umsetzen, wie ich wollte. Ich bin direkt wieder dran.'], ['Offene Baustelle', 'Ich hatte heute mit {topic} eine kurzfristige Verzögerung und konnte deshalb nicht wie geplant weiterarbeiten. Ich ziehe die Sache sofort wieder auf.']],
-  Aufräumen: [['Haushaltsdiplomatie', 'Ich würde ja, aber {topic} ist gerade wirklich dazwischengekommen. Ich mache es später heute auf jeden Fall noch.'], ['Fast ordentlich', 'Wegen {topic} bin ich heute nicht so weit gekommen, wie ich wollte. Ich räume es im nächsten Schritt wieder auf.'], ['Plan B', 'Ich war heute mit {topic} kurzfristig überlastet und konnte deshalb nicht wie geplant aufräumen. Ich mache es gleich danach wieder.']],
+  Hausaufgaben: [
+    ['Der Klassiker', 'Ich wollte es wirklich machen, aber {topic} hat mich komplett aus dem Konzept gebracht. Ich hole es zuverlässig nach.'],
+    ['Fast geschafft', 'Ich habe bei {topic} heute eine unerwartete Pause gebraucht und konnte daraus keinen festen Plan mehr machen. Ich komme sofort wieder dran.'],
+    ['Voller Fokus', 'Das war heute ein echter Ausrutscher wegen {topic}. Ich bin aber gleich wieder bei der Sache und mache es danach sauber.'],
+  ],
+  'Zu spät': [
+    ['Knapp daneben', 'Wegen {topic} hat sich heute alles verzögert. Ich bin schon unterwegs und beeile mich, so gut es geht.'],
+    ['Ungeplante Pause', 'Ich hatte wegen {topic} eine kleine Blockade und konnte nicht rechtzeitig losfahren. Ich bin auf dem Weg und komme so schnell wie möglich.'],
+    ['Spät dran', 'Ich wurde heute durch {topic} aus dem Rhythmus gebracht und bin deshalb später dran. Ich bin schon unterwegs und mache mich sofort auf den Weg.'],
+  ],
+  Verabredung: [
+    ['Ungeplante Wendung', 'Es tut mir leid, aber wegen {topic} schaffe ich es heute leider nicht. Können wir einen neuen Termin finden?'],
+    ['Ehrlich gesagt', 'Heute kommt mir {topic} dazwischen, deshalb kann ich die Verabredung nicht wie geplant einhalten. Ich würde mich gern bald neu verabreden.'],
+    ['Konkret', 'Ich musste mich heute wegen {topic} kurzfristig neu sortieren und kann deshalb nicht erscheinen. Lass uns gern einen neuen Zeitpunkt finden.'],
+  ],
+  Arbeit: [
+    ['Kurze Erklärung', 'Ich kann mich heute wegen {topic} nicht so konzentrieren wie sonst. Ich kümmere mich darum und melde mich mit einem Update.'],
+    ['Prioritäten', 'Wegen {topic} musste ich heute meine Prioritäten neu setzen und konnte den Plan nicht so umsetzen, wie ich wollte. Ich bin direkt wieder dran.'],
+    ['Offene Baustelle', 'Ich hatte heute mit {topic} eine kurzfristige Verzögerung und konnte deshalb nicht wie geplant weiterarbeiten. Ich ziehe die Sache sofort wieder auf.'],
+  ],
+  Aufräumen: [
+    ['Haushaltsdiplomatie', 'Ich würde ja, aber {topic} ist gerade wirklich dazwischengekommen. Ich mache es später heute auf jeden Fall noch.'],
+    ['Fast ordentlich', 'Wegen {topic} bin ich heute nicht so weit gekommen, wie ich wollte. Ich räume es im nächsten Schritt wieder auf.'],
+    ['Plan B', 'Ich war heute mit {topic} kurzfristig überlastet und konnte deshalb nicht wie geplant aufräumen. Ich mache es gleich danach wieder.'],
+  ],
 };
 
 function escapeHtml(value = '') {
@@ -81,8 +101,7 @@ function renderHistory(history = getHistory()) {
   historyList.innerHTML = history
     .map((excuse) => {
       const occasion = escapeHtml(excuse.occasion || 'Unbekannt');
-      const tone = escapeHtml(toneLabels[excuse.tone] || excus
-        .tone || '—');
+      const tone = escapeHtml(toneLabels[excuse.tone] || excuse.tone || '—');
       const title = escapeHtml(excuse.title || 'Ausrede');
 
       return `

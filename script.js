@@ -12,12 +12,36 @@ const resultOccasion = document.querySelector('#result-occasion');
 const historyList = document.querySelector('#history-list');
 const historyKey = 'ausredenwerk-history';
 
+const toneLabels = {
+  locker: 'Locker',
+  glaubwürdig: 'Glaubwürdig',
+  dramatisch: 'Dramatisch',
+};
+
+const detailLabels = {
+  kurz: 'Kurz & knapp',
+  normal: 'Mit etwas Kontext',
+  ausführlich: 'Ausführlich',
+};
+
+const tonePhrases = {
+  locker: 'Ich bin heute ein bisschen im Stress und konnte deshalb nicht wie geplant reagieren.',
+  glaubwürdig: 'Ich hatte heute einen kurzfristigen Gegenstopp und konnte deshalb nicht wie geplant reagieren.',
+  dramatisch: 'Ein unerwarteter Zwischenfall hat meinen Plan heute komplett aus dem Takt gebracht.',
+};
+
+const detailPhrases = {
+  kurz: 'Ich mache es schnell nach.',
+  normal: 'Ich kümmere mich direkt darum und mache es so bald wie möglich nach.',
+  ausführlich: 'Ich schaue es mir sofort an, kümmere mich persönlich darum und melde mich mit einem Update, sobald ich wieder auf Kurs bin.',
+};
+
 const templates = {
-  Hausaufgaben: [['Der Klassiker', 'Ich wollte es wirklich machen, aber {topic} hat mich komplett aus dem Konzept gebracht. Ich hole es zuverlässig nach.'], ['Fast geschafft', 'Ich habe bei {topic} zu lange gebraucht und konnte meine Prioritäten nicht sauber trennen. Ich mache es heute noch nach.'], ['Ziel verloren', 'Es war ein kompletter Ausrutscher mit {topic}. Ich bin dran und setze mich sofort wieder daran.']],
-  'Zu spät': [['Knapp daneben', 'Wegen {topic} hat sich heute alles verzögert. Ich bin schon unterwegs und beeile mich, so gut es geht.'], ['Ungeplante Pause', 'Ich hatte wegen {topic} eine kleine Unterbrechung und bin dadurch später losgekommen. Ich bin unterwegs und entschuldige mich.'], ['Kleine Verzögerung', 'Es war ein unvorhergesehener Rückschlag mit {topic}. Ich werde mich direkt wieder in Bewegung setzen.']],
-  Verabredung: [['Ungeplante Wendung', 'Es tut mir leid, aber wegen {topic} schaffe ich es heute leider nicht. Können wir einen neuen Termin finden?'], ['Ehrlich gesagt', 'Heute kommt mir {topic} dazwischen. Ich möchte dich nicht im Unklaren lassen und schlage einen neuen Termin vor.'], ['Besser ehrlich', 'Ich musste mich heute wegen {topic} kurzfristig um etwas kümmern. Ich würde gern einen neuen Termin mit dir vereinbaren.']],
-  Arbeit: [['Kurze Erklärung', 'Ich kann mich heute wegen {topic} nicht so konzentrieren wie sonst. Ich kümmere mich darum und melde mich mit einem Update.'], ['Prioritäten', 'Wegen {topic} musste ich meine Energie heute anders verteilen. Ich bin aber sofort wieder am Ball und schaffe den Rest nach.'], ['Nicht ganz so einfach', 'Ich bin heute durch {topic} etwas aus dem Takt geraten. Ich arbeite die Sache schnell auf und melde mich dann wieder.']],
-  Aufräumen: [['Haushaltsdiplomatie', 'Ich würde ja, aber {topic} ist gerade wirklich dazwischengekommen. Ich mache es später heute auf jeden Fall noch.'], ['Fast ordentlich', 'Wegen {topic} bin ich heute nicht richtig in den Rhythmus gekommen. Ich räume es danach sofort wieder auf.'], ['Zwei Schritte vor, ein Schritt zurück', 'Ich hätte es gern geschafft, aber {topic} hat mich heute ausgebremst. Ich räume es später gezielt nach.']],
+  Hausaufgaben: [['Der Klassiker', 'Ich wollte es wirklich machen, aber {topic} hat mich komplett aus dem Konzept gebracht. Ich hole es zuverlässig nach.'], ['Fast geschafft', 'Ich habe bei {topic} heute eine unerwartete Pause gebraucht und konnte daraus keinen festen Plan mehr machen. Ich komme sofort wieder dran.'], ['Voller Fokus', 'Das war heute ein echter Ausrutscher wegen {topic}. Ich bin aber gleich wieder bei der Sache und mache es danach sauber.']],
+  'Zu spät': [['Knapp daneben', 'Wegen {topic} hat sich heute alles verzögert. Ich bin schon unterwegs und beeile mich, so gut es geht.'], ['Ungeplante Pause', 'Ich hatte wegen {topic} eine kleine Blockade und konnte nicht rechtzeitig losfahren. Ich bin auf dem Weg und komme so schnell wie möglich.'], ['Spät dran', 'Ich wurde heute durch {topic} aus dem Rhythmus gebracht und bin deshalb später dran. Ich bin schon unterwegs und mache mich sofort auf den Weg.']],
+  Verabredung: [['Ungeplante Wendung', 'Es tut mir leid, aber wegen {topic} schaffe ich es heute leider nicht. Können wir einen neuen Termin finden?'], ['Ehrlich gesagt', 'Heute kommt mir {topic} dazwischen, deshalb kann ich die Verabredung nicht wie geplant einhalten. Ich würde mich gern bald neu verabreden.'], ['Konkret', 'Ich musste mich heute wegen {topic} kurzfristig neu sortieren und kann deshalb nicht erscheinen. Lass uns gern einen neuen Zeitpunkt finden.']],
+  Arbeit: [['Kurze Erklärung', 'Ich kann mich heute wegen {topic} nicht so konzentrieren wie sonst. Ich kümmere mich darum und melde mich mit einem Update.'], ['Prioritäten', 'Wegen {topic} musste ich heute meine Prioritäten neu setzen und konnte den Plan nicht so umsetzen, wie ich wollte. Ich bin direkt wieder dran.'], ['Offene Baustelle', 'Ich hatte heute mit {topic} eine kurzfristige Verzögerung und konnte deshalb nicht wie geplant weiterarbeiten. Ich ziehe die Sache sofort wieder auf.']],
+  Aufräumen: [['Haushaltsdiplomatie', 'Ich würde ja, aber {topic} ist gerade wirklich dazwischengekommen. Ich mache es später heute auf jeden Fall noch.'], ['Fast ordentlich', 'Wegen {topic} bin ich heute nicht so weit gekommen, wie ich wollte. Ich räume es im nächsten Schritt wieder auf.'], ['Plan B', 'Ich war heute mit {topic} kurzfristig überlastet und konnte deshalb nicht wie geplant aufräumen. Ich mache es gleich danach wieder.']],
 };
 
 function escapeHtml(value = '') {
@@ -57,7 +81,8 @@ function renderHistory(history = getHistory()) {
   historyList.innerHTML = history
     .map((excuse) => {
       const occasion = escapeHtml(excuse.occasion || 'Unbekannt');
-      const tone = escapeHtml(excuse.tone || '—');
+      const tone = escapeHtml(toneLabels[excuse.tone] || excus
+        .tone || '—');
       const title = escapeHtml(excuse.title || 'Ausrede');
 
       return `
@@ -73,8 +98,18 @@ function renderHistory(history = getHistory()) {
     .join('');
 }
 
+function buildExcuseText(template, topic, tone, detail) {
+  const sentence = template.replace(/\{topic\}/g, topic).trim();
+  const tonePhrase = tonePhrases[tone] || tonePhrases.glaubwürdig;
+  const detailPhrase = detailPhrases[detail] || detailPhrases.normal;
+
+  return `${sentence} ${tonePhrase} ${detailPhrase}`;
+}
+
 function createExcuse() {
   const occasion = occasionInput.value;
+  const tone = toneInput.value || 'glaubwürdig';
+  const detail = detailInput.value || 'normal';
   const topic = topicInput.value.trim() || 'ein unerwarteter Zwischenfall';
   const options = templates[occasion];
 
@@ -82,10 +117,15 @@ function createExcuse() {
     const fallbackExcuse = {
       occasion: occasion || 'Allgemein',
       topic,
-      tone: toneInput.value,
-      detail: detailInput.value,
+      tone,
+      detail,
       title: `Notfallplan: ${topic}`,
-      text: `Ich hatte heute mit ${topic} zu tun und konnte deshalb nicht wie geplant reagieren. Ich kümmere mich im nächsten Schritt darum.`,
+      text: buildExcuseText(
+        `Ich hatte heute mit {topic} zu tun und konnte deshalb nicht wie geplant reagieren.`,
+        topic,
+        tone,
+        detail,
+      ),
     };
 
     renderResult(fallbackExcuse);
@@ -97,10 +137,10 @@ function createExcuse() {
   const excuse = {
     occasion,
     topic,
-    tone: toneInput.value,
-    detail: detailInput.value,
+    tone,
+    detail,
     title: `${title}: ${topic}`,
-    text: template.replace(/\{topic\}/g, topic),
+    text: buildExcuseText(template, topic, tone, detail),
   };
 
   renderResult(excuse);
@@ -111,7 +151,7 @@ function renderResult(excuse) {
   emptyState.hidden = true;
   resultState.hidden = false;
   resultOccasion.textContent = excuse.occasion;
-  resultMeta.textContent = `${excuse.tone} · ${excuse.detail}`;
+  resultMeta.textContent = `${toneLabels[excuse.tone] || excuse.tone} · ${detailLabels[excuse.detail] || excuse.detail}`;
   resultTitle.textContent = excuse.title;
   resultText.textContent = excuse.text;
 }

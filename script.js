@@ -13,19 +13,59 @@ const historyList = document.querySelector('#history-list');
 const historyKey = 'ausredenwerk-history';
 
 const templates = {
-  Hausaufgaben: [['Der Klassiker', 'Ich wollte es wirklich machen, aber {topic} hat mich komplett aus dem Konzept gebracht. Ich hole es zuverlässig nach.'], ['Fast geschafft', 'Ich habe bei {topic} zu lange gebraucht und konnte meine Prioritäten nicht sauber trennen. Ich mache es heute noch nach.'], ['Ziel verloren', 'Es war ein kompletter Ausrutscher mit {topic}. Ich bin dran und setze mich sofort wieder daran.']],
-  'Zu spät': [['Knapp daneben', 'Wegen {topic} hat sich heute alles verzögert. Ich bin schon unterwegs und beeile mich, so gut es geht.'], ['Ungeplante Pause', 'Ich hatte wegen {topic} eine kleine Unterbrechung und bin dadurch später losgekommen. Ich bin unterwegs und entschuldige mich.'], ['Kleine Verzögerung', 'Es war ein unvorhergesehener Rückschlag mit {topic}. Ich werde mich direkt wieder in Bewegung setzen.']],
-  Verabredung: [['Ungeplante Wendung', 'Es tut mir leid, aber wegen {topic} schaffe ich es heute leider nicht. Können wir einen neuen Termin finden?'], ['Ehrlich gesagt', 'Heute kommt mir {topic} dazwischen. Ich möchte dich nicht im Unklaren lassen und schlage einen neuen Termin vor.'], ['Besser ehrlich', 'Ich musste mich heute wegen {topic} kurzfristig um etwas kümmern. Ich würde gern einen neuen Termin mit dir vereinbaren.']],
-  Arbeit: [['Kurze Erklärung', 'Ich kann mich heute wegen {topic} nicht so konzentrieren wie sonst. Ich kümmere mich darum und melde mich mit einem Update.'], ['Prioritäten', 'Wegen {topic} musste ich meine Energie heute anders verteilen. Ich bin aber sofort wieder am Ball und schaffe den Rest nach.'], ['Nicht ganz so einfach', 'Ich bin heute durch {topic} etwas aus dem Takt geraten. Ich arbeite die Sache schnell auf und melde mich dann wieder.']],
-  Aufräumen: [['Haushaltsdiplomatie', 'Ich würde ja, aber {topic} ist gerade wirklich dazwischengekommen. Ich mache es später heute auf jeden Fall noch.'], ['Fast ordentlich', 'Wegen {topic} bin ich heute nicht richtig in den Rhythmus gekommen. Ich räume es danach sofort wieder auf.'], ['Zwei Schritte vor, ein Schritt zurück', 'Ich hätte es gern geschafft, aber {topic} hat mich heute ausgebremst. Ich räume es später gezielt nach.']],
+  Hausaufgaben: [
+    ['Der Klassiker', 'Ich wollte heute wirklich daran arbeiten, aber {topic} hat mich komplett aus dem Konzept gebracht. Ich setze mich später noch einmal konzentriert daran.'],
+    ['Ein bisschen später', 'Ich bin heute mit {topic} in eine andere Richtung geraten und konnte mich nicht mehr richtig auf die Aufgaben fokussieren. Ich mache es gleich nach.'],
+    ['Ich hole es nach', 'Ich hatte heute mit {topic} zu viel zu tun und konnte die Hausaufgaben nicht sauber abschließen. Ich hole sie später nach und mache sie ordentlich.'],
+  ],
+  'Zu spät': [
+    ['Verzögerung', 'Es ist heute etwas Unvorhergesehenes mit {topic} dazwischengekommen, deshalb bin ich später los. Ich bin schon unterwegs und entschuldige mich.'],
+    ['Kurz abgebremst', 'Heute hat {topic} mich kurz aus dem Takt gebracht. Ich bin schon auf dem Weg und beeile mich so gut ich kann.'],
+    ['Nicht ganz so schnell', 'Ich musste mich heute wegen {topic} erst noch neu sortieren. Ich bin unterwegs und komme schnellstens.'],
+  ],
+  Verabredung: [
+    ['Ich möchte ehrlich bleiben', 'Es tut mir leid, aber heute war {topic} plötzlich wichtiger und ich kann nicht wie geplant. Können wir einen neuen Termin finden?'],
+    ['Ungeplante Situation', 'Heute hat sich mit {topic} alles kurzfristig verschoben. Ich möchte dich nicht im Unklaren lassen und schlage gern einen anderen Zeitpunkt vor.'],
+    ['Ich brauche eine kleine Verschiebung', 'Ich wollte es wirklich schaffen, aber {topic} hat mich heute vollkommen ausgebremst. Ich würde gern einen neuen Termin mit dir vereinbaren.'],
+  ],
+  Arbeit: [
+    ['Keine einfache Aufgabe', 'Ich konnte mich heute wegen {topic} nicht so konzentrieren, wie ich wollte. Ich arbeite den Rest schnell nach und melde mich mit einem Update.'],
+    ['Prioritäten verschoben', 'Heute musste ich wegen {topic} meine Energie anders verteilen. Ich bin aber sofort wieder dran und mache den Rest so schnell wie möglich.'],
+    ['Etwas aus dem Takt', 'Ich bin heute durch {topic} kurz aus dem Takt geraten, deshalb konnte ich nicht sauber weiterarbeiten. Ich hole es in den nächsten Schritten nach.'],
+  ],
+  Aufräumen: [
+    ['Kurz nicht drin', 'Ich hätte es gern sofort gemacht, aber {topic} hat mich heute wirklich ausgebremst. Ich räume es später gezielt auf.'],
+    ['Das Chaos war größer', 'Heute war {topic} einfach zu präsent und ich bin nicht richtig in den Haushalt gekommen. Ich mache es gleich nach und räume alles wieder auf.'],
+    ['Ich komme noch dran', 'Ich wollte heute noch aufräumen, aber {topic} war unerwartet dazwischen. Ich mache es später und bringe alles wieder in Ordnung.'],
+  ],
 };
 
 const genericTemplates = {
-  Hausaufgaben: [['Der Klassiker', 'Ich habe es heute leider nicht geschafft, mich auf die Hausaufgaben zu konzentrieren. Ich hole sie zuverlässig nach.'], ['Fast geschafft', 'Heute ist mir einiges dazwischengekommen, deshalb sind die Hausaufgaben liegen geblieben. Ich setze mich so bald wie möglich daran.'], ['Neuer Anlauf', 'Ich habe meine Zeit heute falsch eingeteilt und bin mit den Hausaufgaben nicht fertig geworden. Ich kümmere mich darum.']],
-  'Zu spät': [['Knapp daneben', 'Heute hat sich alles verzögert. Es tut mir leid, ich beeile mich und bin so schnell wie möglich da.'], ['Ungeplante Pause', 'Ich bin später losgekommen als geplant. Entschuldigung fürs Warten – ich bin unterwegs.'], ['Kleine Verzögerung', 'Bei mir ist heute etwas Unvorhergesehenes dazwischengekommen. Ich komme so schnell ich kann.']],
-  Verabredung: [['Ungeplante Wendung', 'Es tut mir leid, aber heute schaffe ich es leider nicht. Können wir einen neuen Termin finden?'], ['Ehrlich gesagt', 'Ich muss unser Treffen heute leider absagen. Ich möchte dich nicht im Unklaren lassen und schlage gern einen neuen Termin vor.'], ['Besser ehrlich', 'Heute passt es bei mir leider nicht. Es tut mir leid – können wir uns ein anderes Mal treffen?']],
-  Arbeit: [['Kurze Erklärung', 'Ich bin heute nicht so konzentriert wie sonst und komme langsamer voran. Ich kümmere mich darum und melde mich mit einem Update.'], ['Prioritäten', 'Heute musste ich meine Zeit anders einteilen. Ich bin aber wieder dran und kümmere mich so schnell wie möglich um den Rest.'], ['Nicht ganz so einfach', 'Ich bin heute etwas aus dem Takt geraten. Ich arbeite die Sache auf und melde mich anschließend wieder.']],
-  Aufräumen: [['Haushaltsdiplomatie', 'Ich bin heute nicht zum Aufräumen gekommen. Ich hole es später nach und kümmere mich darum.'], ['Fast ordentlich', 'Heute ist mir der Haushalt durchgerutscht. Ich räume später auf und bringe alles wieder in Ordnung.'], ['Zwei Schritte vor, ein Schritt zurück', 'Ich habe es heute nicht geschafft aufzuräumen. Ich nehme es mir später gezielt vor.']],
+  Hausaufgaben: [
+    ['Der Klassiker', 'Ich wollte heute wirklich daran arbeiten, aber heute lief alles ein bisschen anders und ich konnte mich nicht richtig fokussieren. Ich setze mich später noch einmal gezielt daran.'],
+    ['Ein bisschen später', 'Es ist heute einfach zu viel auf einmal gewesen, deshalb bin ich mit den Hausaufgaben nicht weitergekommen. Ich mache sie gleich nach und hole das auf.'],
+    ['Ich hole es nach', 'Ich hatte heute nicht die nötige Ruhe und Konzentration, um die Hausaufgaben ordentlich zu schaffen. Ich mache sie später noch einmal in Ruhe.'],
+  ],
+  'Zu spät': [
+    ['Verzögerung', 'Heute ist etwas Unvorhergesehenes dazwischengekommen, deshalb bin ich später los. Ich bin schon unterwegs und entschuldige mich.'],
+    ['Kurz abgebremst', 'Ich musste heute noch einmal kurz alles neu sortieren und bin dadurch später weg. Ich beeile mich so gut ich kann.'],
+    ['Nicht ganz so schnell', 'Es hat heute eine kleine Verzögerung gegeben, aber ich bin auf dem Weg und komme so schnell wie möglich.'],
+  ],
+  Verabredung: [
+    ['Ich möchte ehrlich bleiben', 'Es tut mir leid, aber heute geht es leider nicht. Ich möchte dich nicht im Unklaren lassen und schlage gern einen neuen Termin vor.'],
+    ['Ungeplante Situation', 'Heute ist etwas dazwischengekommen, das ich kurzfristig nicht beeinflussen konnte. Ich würde gern einen anderen Zeitpunkt mit dir vereinbaren.'],
+    ['Ich brauche eine kleine Verschiebung', 'Ich wollte es wirklich schaffen, aber heute hat sich leider alles anders entwickelt. Ich bin gern bereit, einen neuen Termin zu finden.'],
+  ],
+  Arbeit: [
+    ['Keine einfache Aufgabe', 'Ich konnte mich heute nicht so fokussieren, wie ich wollte, und habe deshalb nicht alles so schnell geschafft. Ich arbeite den Rest nach und melde mich mit einem Update.'],
+    ['Prioritäten verschoben', 'Heute mussten meine Prioritäten kurz anders gesetzt werden, deshalb konnte ich nicht wie geplant vorankommen. Ich mache den Rest so schnell wie möglich.'],
+    ['Etwas aus dem Takt', 'Ich bin heute kurz aus dem Takt geraten und konnte deshalb nicht sauber weiterarbeiten. Ich hole es in den nächsten Schritten nach.'],
+  ],
+  Aufräumen: [
+    ['Kurz nicht drin', 'Ich hätte es gern sofort gemacht, aber heute war einfach zu viel gleichzeitig. Ich räume es später gezielt auf.'],
+    ['Das Chaos war größer', 'Heute ist alles etwas unordentlicher gelaufen und ich konnte nicht richtig zum Aufräumen kommen. Ich mache es gleich nach und bringe alles wieder in Ordnung.'],
+    ['Ich komme noch dran', 'Ich wollte heute noch aufräumen, aber die Zeit war heute einfach nicht passend. Ich mache es später und räume alles wieder sauber.'],
+  ],
 };
 
 function escapeHtml(value = '') {
@@ -95,7 +135,7 @@ function createExcuse() {
       title: topic ? `Notfallplan: ${topic}` : 'Notfallplan',
       text: topic
         ? `Ich hatte heute mit ${topic} zu tun und konnte deshalb nicht wie geplant reagieren. Ich kümmere mich im nächsten Schritt darum.`
-        : 'Heute ist etwas Unvorhergesehenes dazwischengekommen. Ich konnte deshalb nicht wie geplant reagieren und kümmere mich im nächsten Schritt darum.',
+        : 'Heute ist leider etwas dazwischengekommen. Ich konnte deshalb nicht wie geplant reagieren und kümmere mich im nächsten Schritt darum.',
     };
 
     renderResult(fallbackExcuse);

@@ -20,6 +20,14 @@ const templates = {
   Aufräumen: [['Haushaltsdiplomatie', 'Ich würde ja, aber {topic} ist gerade wirklich dazwischengekommen. Ich mache es später heute auf jeden Fall noch.'], ['Fast ordentlich', 'Wegen {topic} bin ich heute nicht richtig in den Rhythmus gekommen. Ich räume es danach sofort wieder auf.'], ['Zwei Schritte vor, ein Schritt zurück', 'Ich hätte es gern geschafft, aber {topic} hat mich heute ausgebremst. Ich räume es später gezielt nach.']],
 };
 
+const genericTemplates = {
+  Hausaufgaben: [['Der Klassiker', 'Ich habe es heute leider nicht geschafft, mich auf die Hausaufgaben zu konzentrieren. Ich hole sie zuverlässig nach.'], ['Fast geschafft', 'Heute ist mir einiges dazwischengekommen, deshalb sind die Hausaufgaben liegen geblieben. Ich setze mich so bald wie möglich daran.'], ['Neuer Anlauf', 'Ich habe meine Zeit heute falsch eingeteilt und bin mit den Hausaufgaben nicht fertig geworden. Ich kümmere mich darum.']],
+  'Zu spät': [['Knapp daneben', 'Heute hat sich alles verzögert. Es tut mir leid, ich beeile mich und bin so schnell wie möglich da.'], ['Ungeplante Pause', 'Ich bin später losgekommen als geplant. Entschuldigung fürs Warten – ich bin unterwegs.'], ['Kleine Verzögerung', 'Bei mir ist heute etwas Unvorhergesehenes dazwischengekommen. Ich komme so schnell ich kann.']],
+  Verabredung: [['Ungeplante Wendung', 'Es tut mir leid, aber heute schaffe ich es leider nicht. Können wir einen neuen Termin finden?'], ['Ehrlich gesagt', 'Ich muss unser Treffen heute leider absagen. Ich möchte dich nicht im Unklaren lassen und schlage gern einen neuen Termin vor.'], ['Besser ehrlich', 'Heute passt es bei mir leider nicht. Es tut mir leid – können wir uns ein anderes Mal treffen?']],
+  Arbeit: [['Kurze Erklärung', 'Ich bin heute nicht so konzentriert wie sonst und komme langsamer voran. Ich kümmere mich darum und melde mich mit einem Update.'], ['Prioritäten', 'Heute musste ich meine Zeit anders einteilen. Ich bin aber wieder dran und kümmere mich so schnell wie möglich um den Rest.'], ['Nicht ganz so einfach', 'Ich bin heute etwas aus dem Takt geraten. Ich arbeite die Sache auf und melde mich anschließend wieder.']],
+  Aufräumen: [['Haushaltsdiplomatie', 'Ich bin heute nicht zum Aufräumen gekommen. Ich hole es später nach und kümmere mich darum.'], ['Fast ordentlich', 'Heute ist mir der Haushalt durchgerutscht. Ich räume später auf und bringe alles wieder in Ordnung.'], ['Zwei Schritte vor, ein Schritt zurück', 'Ich habe es heute nicht geschafft aufzuräumen. Ich nehme es mir später gezielt vor.']],
+};
+
 function escapeHtml(value = '') {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -75,8 +83,8 @@ function renderHistory(history = getHistory()) {
 
 function createExcuse() {
   const occasion = occasionInput.value;
-  const topic = topicInput.value.trim() || 'ein unerwarteter Zwischenfall';
-  const options = templates[occasion];
+  const topic = topicInput.value.trim();
+  const options = topic ? templates[occasion] : genericTemplates[occasion];
 
   if (!Array.isArray(options) || !options.length) {
     const fallbackExcuse = {
@@ -84,8 +92,10 @@ function createExcuse() {
       topic,
       tone: toneInput.value,
       detail: detailInput.value,
-      title: `Notfallplan: ${topic}`,
-      text: `Ich hatte heute mit ${topic} zu tun und konnte deshalb nicht wie geplant reagieren. Ich kümmere mich im nächsten Schritt darum.`,
+      title: topic ? `Notfallplan: ${topic}` : 'Notfallplan',
+      text: topic
+        ? `Ich hatte heute mit ${topic} zu tun und konnte deshalb nicht wie geplant reagieren. Ich kümmere mich im nächsten Schritt darum.`
+        : 'Heute ist etwas Unvorhergesehenes dazwischengekommen. Ich konnte deshalb nicht wie geplant reagieren und kümmere mich im nächsten Schritt darum.',
     };
 
     renderResult(fallbackExcuse);
@@ -99,8 +109,8 @@ function createExcuse() {
     topic,
     tone: toneInput.value,
     detail: detailInput.value,
-    title: `${title}: ${topic}`,
-    text: template.replace(/\{topic\}/g, topic),
+    title: topic ? `${title}: ${topic}` : title,
+    text: topic ? template.replace(/\{topic\}/g, topic) : template,
   };
 
   renderResult(excuse);

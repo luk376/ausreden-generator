@@ -14,56 +14,56 @@ const historyKey = 'ausredenwerk-history';
 
 const templates = {
   Hausaufgaben: [
-    ['Heute nicht geschafft', 'Ich bin mit {topic} heute nicht so weit gekommen wie geplant. Ich setze mich später noch einmal in Ruhe daran.'],
-    ['Ich hole es nach', 'Bei {topic} bin ich heute hängen geblieben und dann ist mir die Zeit davongelaufen. Ich mache morgen weiter und hole den Rest nach.'],
-    ['Kopf war woanders', 'Ich konnte mich heute bei {topic} einfach nicht richtig konzentrieren. Ich schaue es mir später noch einmal an.'],
+    ['Heute nicht geschafft', 'Ich bin mit {topic} heute nicht so weit gekommen, wie ich wollte. Ich setze mich später noch mal in Ruhe dran.'],
+    ['Ich hole es nach', 'Bei {topic} bin ich irgendwie hängen geblieben und dann war die Zeit plötzlich weg. Ich mache später weiter.'],
+    ['Kopf war woanders', 'Ich konnte mich heute bei {topic} einfach nicht richtig konzentrieren. Ich schaue es mir morgen noch mal an.'],
   ],
   'Zu spät': [
-    ['Bin unterwegs', 'Ich hänge gerade etwas hinterher und bin schon auf dem Weg. Tut mir leid, dass du warten musst.'],
-    ['Komme später', 'Bei mir hat sich gerade alles ein bisschen verzögert. Ich beeile mich und bin so schnell wie möglich da.'],
-    ['Kleine Verspätung', 'Ich schaffe es leider nicht ganz pünktlich. Ich bin unterwegs und sage Bescheid, sobald ich da bin.'],
+    ['Bin unterwegs', 'Ich bin leider später dran als gedacht und schon unterwegs. Sorry, dass du warten musst.'],
+    ['Komme später', 'Bei mir hat sich gerade alles verzögert. Ich beeile mich – bin so schnell da, wie ich kann.'],
+    ['Kleine Verspätung', 'Ich schaffe es nicht ganz pünktlich. Ich bin unterwegs und melde mich, wenn ich da bin.'],
   ],
   Verabredung: [
-    ['Können wir verschieben?', 'Es tut mir leid, aber ich schaffe es heute doch nicht. Können wir einen anderen Tag ausmachen?'],
-    ['Heute klappt es leider nicht', 'Ich muss unser Treffen für heute absagen. Tut mir leid, dass ich so kurzfristig Bescheid sage. Passt dir ein anderer Tag?'],
-    ['Lass uns einen neuen Termin finden', 'Bei mir ist heute etwas dazwischengekommen und ich schaffe es nicht mehr. Ich würde dich aber gern sehen – wann passt es dir nächste Woche?'],
+    ['Können wir verschieben?', 'Hey, tut mir leid, aber heute schaffe ich es doch nicht. Können wir uns an einem anderen Tag treffen?'],
+    ['Heute klappt es leider nicht', 'Ich muss für heute leider absagen. Tut mir leid, dass ich dir so kurzfristig Bescheid sage. Passt dir ein anderer Tag?'],
+    ['Lass uns einen neuen Termin finden', 'Bei mir ist heute etwas dazwischengekommen. Ich würde dich aber gern sehen – wollen wir einen neuen Termin ausmachen?'],
   ],
   Arbeit: [
-    ['Kurzes Update', 'Ich bin mit {topic} noch nicht so weit, wie ich gehofft hatte. Ich arbeite daran weiter und gebe dir Bescheid, sobald ich einen verlässlichen Stand habe.'],
-    ['Brauche noch etwas Zeit', 'Bei {topic} brauche ich noch ein bisschen länger. Ich melde mich, sobald ich es abgeschlossen habe.'],
-    ['Ich kümmere mich darum', 'Ich bin bei {topic} heute nicht wie geplant vorangekommen. Ich nehme es als Nächstes in Angriff und halte dich auf dem Laufenden.'],
+    ['Kurzes Update', 'Ich bin mit {topic} noch nicht ganz fertig. Ich mache weiter und gebe dir Bescheid, sobald ich einen verlässlichen Stand habe.'],
+    ['Brauche noch etwas Zeit', 'Für {topic} brauche ich noch ein bisschen länger als gedacht. Ich melde mich, sobald ich fertig bin.'],
+    ['Ich kümmere mich darum', 'Ich bin bei {topic} heute nicht so weit gekommen wie geplant. Ich nehme es als Nächstes in Angriff und halte dich auf dem Laufenden.'],
   ],
   Aufräumen: [
-    ['Mache ich später', 'Ich bin heute noch nicht zum Aufräumen gekommen. Ich kümmere mich später darum.'],
-    ['Ist noch nicht erledigt', 'Ich hab’s heute nicht mehr geschafft aufzuräumen. Ich mache es morgen, versprochen.'],
+    ['Mache ich später', 'Ich bin heute noch nicht zum Aufräumen gekommen. Ich mach’s später noch.'],
+    ['Ist noch nicht erledigt', 'Ich hab’s heute nicht mehr geschafft aufzuräumen. Ich kümmere mich morgen darum.'],
     ['Kommt noch dran', 'Heute ist der Haushalt liegen geblieben. Ich räume später noch ein bisschen auf.'],
   ],
 };
 
 const genericTemplates = {
   Hausaufgaben: [
-    ['Heute nicht geschafft', 'Ich bin heute nicht so weit gekommen wie geplant. Ich setze mich später noch einmal in Ruhe daran.'],
-    ['Ich hole es nach', 'Ich bin heute bei den Aufgaben hängen geblieben und dann ist mir die Zeit davongelaufen. Ich mache morgen weiter und hole den Rest nach.'],
-    ['Kopf war woanders', 'Ich konnte mich heute einfach nicht richtig konzentrieren. Ich schaue es mir später noch einmal an.'],
+    ['Heute nicht geschafft', 'Ich bin heute nicht so weit gekommen, wie ich wollte. Ich setze mich später noch mal in Ruhe dran.'],
+    ['Ich hole es nach', 'Ich bin bei den Aufgaben irgendwie hängen geblieben und dann war die Zeit plötzlich weg. Ich mache später weiter.'],
+    ['Kopf war woanders', 'Ich konnte mich heute einfach nicht richtig konzentrieren. Ich schaue es mir morgen noch mal an.'],
   ],
   'Zu spät': [
-    ['Bin unterwegs', 'Ich hänge gerade etwas hinterher und bin schon auf dem Weg. Tut mir leid, dass du warten musst.'],
-    ['Komme später', 'Bei mir hat sich gerade alles ein bisschen verzögert. Ich beeile mich und bin so schnell wie möglich da.'],
-    ['Kleine Verspätung', 'Ich schaffe es leider nicht ganz pünktlich. Ich bin unterwegs und sage Bescheid, sobald ich da bin.'],
+    ['Bin unterwegs', 'Ich bin leider später dran als gedacht und schon unterwegs. Sorry, dass du warten musst.'],
+    ['Komme später', 'Bei mir hat sich gerade alles verzögert. Ich beeile mich – bin so schnell da, wie ich kann.'],
+    ['Kleine Verspätung', 'Ich schaffe es nicht ganz pünktlich. Ich bin unterwegs und melde mich, wenn ich da bin.'],
   ],
   Verabredung: [
-    ['Können wir verschieben?', 'Es tut mir leid, aber ich schaffe es heute doch nicht. Können wir einen anderen Tag ausmachen?'],
-    ['Heute klappt es leider nicht', 'Ich muss unser Treffen für heute absagen. Tut mir leid, dass ich so kurzfristig Bescheid sage. Passt dir ein anderer Tag?'],
-    ['Lass uns einen neuen Termin finden', 'Heute ist bei mir einfach zu viel los und ich schaffe es nicht mehr. Ich würde dich aber gern sehen – wann passt es dir nächste Woche?'],
+    ['Können wir verschieben?', 'Hey, tut mir leid, aber heute schaffe ich es doch nicht. Können wir uns an einem anderen Tag treffen?'],
+    ['Heute klappt es leider nicht', 'Ich muss für heute leider absagen. Tut mir leid, dass ich dir so kurzfristig Bescheid sage. Passt dir ein anderer Tag?'],
+    ['Lass uns einen neuen Termin finden', 'Heute ist bei mir einfach zu viel los. Ich würde dich aber gern sehen – wollen wir einen neuen Termin ausmachen?'],
   ],
   Arbeit: [
-    ['Kurzes Update', 'Ich bin heute nicht so weit gekommen, wie ich gehofft hatte. Ich arbeite daran weiter und gebe dir Bescheid, sobald ich einen verlässlichen Stand habe.'],
-    ['Brauche noch etwas Zeit', 'Ich brauche dafür noch ein bisschen länger. Ich melde mich, sobald ich es abgeschlossen habe.'],
-    ['Ich kümmere mich darum', 'Ich bin heute nicht wie geplant vorangekommen. Ich nehme es als Nächstes in Angriff und halte dich auf dem Laufenden.'],
+    ['Kurzes Update', 'Ich bin heute noch nicht so weit gekommen, wie ich wollte. Ich mache weiter und gebe dir Bescheid, sobald ich einen verlässlichen Stand habe.'],
+    ['Brauche noch etwas Zeit', 'Dafür brauche ich noch ein bisschen länger als gedacht. Ich melde mich, sobald ich fertig bin.'],
+    ['Ich kümmere mich darum', 'Ich bin heute nicht so weit gekommen wie geplant. Ich nehme es als Nächstes in Angriff und halte dich auf dem Laufenden.'],
   ],
   Aufräumen: [
-    ['Mache ich später', 'Ich bin heute noch nicht zum Aufräumen gekommen. Ich kümmere mich später darum.'],
-    ['Ist noch nicht erledigt', 'Ich hab’s heute nicht mehr geschafft aufzuräumen. Ich mache es morgen, versprochen.'],
+    ['Mache ich später', 'Ich bin heute noch nicht zum Aufräumen gekommen. Ich mach’s später noch.'],
+    ['Ist noch nicht erledigt', 'Ich hab’s heute nicht mehr geschafft aufzuräumen. Ich kümmere mich morgen darum.'],
     ['Kommt noch dran', 'Heute ist der Haushalt liegen geblieben. Ich räume später noch ein bisschen auf.'],
   ],
 };
@@ -134,8 +134,8 @@ function createExcuse() {
       detail: detailInput.value,
       title: topic ? `Kurzes Update: ${topic}` : 'Kurzes Update',
       text: topic
-        ? `Ich bin mit ${topic} noch nicht so weit wie geplant. Ich kümmere mich darum und melde mich, sobald ich einen neuen Stand habe.`
-        : 'Ich bin heute nicht so weit gekommen wie geplant. Ich kümmere mich darum und melde mich, sobald ich einen neuen Stand habe.',
+        ? `Ich bin mit ${topic} noch nicht ganz fertig. Ich mache weiter und melde mich, sobald ich einen neuen Stand habe.`
+        : 'Ich bin heute noch nicht ganz so weit gekommen wie geplant. Ich mache weiter und melde mich, sobald ich einen neuen Stand habe.',
     };
 
     renderResult(fallbackExcuse);
